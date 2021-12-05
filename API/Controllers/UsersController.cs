@@ -20,8 +20,6 @@ namespace API.Controllers
         }
 
         [HttpGet]
-       
-
         public async Task<IEnumerable<AppUser>> GetUsers()
         {
             return await _context.Users.ToListAsync();
