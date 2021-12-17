@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
 
@@ -18,14 +18,14 @@ namespace API.Controllers
         {
             _context = context;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<AppUser>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
-
+        [Authorize]
         [HttpGet("{id}")]
         
         public async Task<ActionResult<AppUser>> GetUser(int id)
@@ -33,8 +33,7 @@ namespace API.Controllers
             return await _context.Users.FindAsync(id);
         }
 
-
-
+        [Authorize]
         [Route("edit-user")]
         [HttpPost]
 
@@ -53,6 +52,7 @@ namespace API.Controllers
 
         }
 
+        [Authorize]
         [Route("delete-user")]
         [HttpPost]
         public async Task<HttpStatusCode> Delete([FromForm] int id)
@@ -78,7 +78,7 @@ namespace API.Controllers
 
 
 
-
+        [Authorize]
         [HttpPost]
         [Route("add-user")]
 
